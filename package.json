@@ -2,7 +2,6 @@
   "name": "emilus",
   "version": "2.0.1",
   "private": true,
-  "homepage": "https://labuzov.github.io/emilus-admin-template",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -88,7 +87,6 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.4",
-    "gh-pages": "^6.3.0",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
