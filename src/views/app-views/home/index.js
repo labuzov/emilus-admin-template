@@ -8,8 +8,14 @@ import Properties from './Properties';
 const Home = () => {
 	const [objects, setObjects] = useState([]);
 	const [selectedObjectId, setSelectedObjectId] = useState(null);
+	const [draggableId, setDraggableId] = useState(null);
 
 	const handleObjectClick = (id) => {
+		if (selectedObjectId === id) {
+			setSelectedObjectId(null);
+			return;
+		}
+
 		setSelectedObjectId(id);
 	}
 
@@ -22,12 +28,18 @@ const Home = () => {
 			<div className="mr-4" style={{ flexGrow: 1 }}>
 				<ObjectItemList />
 
-				<Properties selectedObject={selectedObject} setObjects={setObjects} />
+				<Properties
+					selectedObject={selectedObject}
+					setObjects={setObjects}
+				/>
 			</div>
 
 			<Board
 				objects={objects}
+				draggableId={draggableId}
+				selectedId={selectedObject?.id}
 				setObjects={setObjects}
+				setDraggableId={setDraggableId}
 				onObjectClick={handleObjectClick}
 			/>
 		</div>

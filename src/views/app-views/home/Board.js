@@ -6,7 +6,7 @@ import { DEFAULT_SIZE } from './objectItems';
 
 
 const Board = ({
-    objects, setObjects, onObjectClick
+    objects, selectedId, draggableId, setObjects, onObjectClick, setDraggableId
 }) => {
     const boardRef = useRef(null);
 
@@ -32,10 +32,16 @@ const Board = ({
     const handleDragOver = (e) => {
 		e.preventDefault();
     };
+    
+    const handleDragEnd = () => {
+        setDraggableId(null);
+    }
 
     const handleObjectDragStart = (e, id, objectId) => {
 		e.dataTransfer.setData('id', id);
 		e.dataTransfer.setData('objectId', objectId);
+
+        setDraggableId(id);
 	}
 
 	const handleDeleteAll = () => {
@@ -49,8 +55,10 @@ const Board = ({
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a');
+
         a.href = url;
         a.download = 'Map.json';
+
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -73,23 +81,41 @@ const Board = ({
             title="Map"
             extra={(
                 <div className="d-flex">
-                    <Upload onChange={handleImport} accept="application/json" showUploadList={false}>
+                    <Upload
+                        accept="application/json"
+                        showUploadList={false}
+                        onChange={handleImport}
+                    >
                         <Button type="primary" className="mr-2">Import</Button>
                     </Upload>
-                    <Button className="mr-4" onClick={handleExport}>Export</Button>
-                    <Button danger onClick={handleDeleteAll} disabled={!objects?.length}>Clear all</Button>
+                    <Button
+                        className="mr-4"
+                        disabled={!objects?.length}
+                        onClick={handleExport}
+                    >
+                        Export
+                    </Button>
+                    <Button
+                        danger
+                        disabled={!objects?.length}
+                        onClick={handleDeleteAll}
+                    >
+                        Clear all
+                    </Button>
                 </div>
             )}
-            style={{ width: '100%', maxWidth: '840px', overflow: 'auto' }}
+            style={{ width: '100%', maxWidth: '840px' }}
         >
             <div
                 ref={boardRef}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
+                onDragEnd={handleDragEnd}
                 style={{
                     width: '800px',
                     height: '520px',
                     border: '1px solid #999',
+                    overflow: 'hidden',
                     position: 'relative'
                 }}
             >
@@ -99,6 +125,8 @@ const Board = ({
                         objectId={obj.objectId}
                         size={obj.size}
                         rotate={obj.rotate}
+                        isDraggable={draggableId === obj.id}
+                        isSelected={selectedId === obj.id}
                         style={{
                             position: 'absolute',
                             left: obj.x,

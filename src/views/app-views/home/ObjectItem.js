@@ -4,7 +4,7 @@ import { objectItems } from './objectItems';
 
 
 const ObjectItem = ({
-    objectId, className, style, size, rotate, onDragStart, onClick
+    objectId, className, style, size, rotate, isDraggable, isSelected, onDragStart, onClick
 }) => {
 
     const handleDragStart = (e) => {
@@ -30,7 +30,10 @@ const ObjectItem = ({
                 width: size + 'px',
                 height: size + 'px',
                 borderRadius: '8px',
-                transform: rotate ? `rotate(${rotate}deg)` : 'none',
+                transform: `${rotate ? `rotate(${rotate}deg)` : ''} ${isDraggable ? ' translateX(9999px)' : ''}`,
+                transition: 'transform 0.01s, background .1s',
+                background: isSelected ? '#eee' : 'transparent',
+                cursor: 'pointer',
                 ...(style ?? {})
             }}
             onDragStart={handleDragStart}

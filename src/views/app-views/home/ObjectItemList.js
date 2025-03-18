@@ -3,23 +3,29 @@ import { DEFAULT_SIZE, objectItems } from './objectItems';
 import ObjectItem from './ObjectItem';
 import { Card } from 'antd';
 
+const tabKeys = {
+    all: 'all',
+    tables: 'tables',
+    chairs: 'chairs'
+}
+
 const tabList = [
     {
-        key: 'all',
+        key: tabKeys.all,
         tab: 'All',
     },
     {
-        key: 'tables',
+        key: tabKeys.tables,
         tab: 'Dining tables',
     },
     {
-        key: 'chairs',
+        key: tabKeys.chairs,
         tab: 'Chairs',
     },
 ];
 
 const ObjectItemList = () => {
-    const [activeTab, setActiveTab] = useState(tabList[0].key);
+    const [activeTab, setActiveTab] = useState(tabKeys.all);
 
     const handleTabChange = (key) => {
 		setActiveTab(key);
@@ -33,9 +39,9 @@ const ObjectItemList = () => {
     const objects = useMemo(() => {
         return objectItems.filter(obj => {
             switch (activeTab) {
-                case 'all': return true;
-                case 'tables': return obj.tags?.includes('table');
-                case 'chairs': return obj.tags?.includes('chair');
+                case tabKeys.all: return true;
+                case tabKeys.tables: return obj.tags?.includes('table');
+                case tabKeys.chairs: return obj.tags?.includes('chair');
                 default: return true;
             }
         })
